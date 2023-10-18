@@ -12,17 +12,16 @@ import java.util.List;
 @RestController
 public class LoansController {
 
+    private final LoanRepository loanRepository;
+
     @Autowired
-    private LoanRepository loanRepository;
+    public LoansController(LoanRepository loanRepository) {
+        this.loanRepository = loanRepository;
+    }
 
     @GetMapping("/myLoans")
     public List<Loans> getLoanDetails(@RequestParam int id) {
-        List<Loans> loans = loanRepository.findByCustomerIdOrderByStartDtDesc(id);
-        if (loans != null ) {
-            return loans;
-        }else {
-            return null;
-        }
+        return loanRepository.findByCustomerIdOrderByStartDtDesc(id);
     }
 
 }

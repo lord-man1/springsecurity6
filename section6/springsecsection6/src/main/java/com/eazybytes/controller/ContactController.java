@@ -13,9 +13,12 @@ import com.eazybytes.repository.ContactRepository;
 
 @RestController
 public class ContactController {
+    private final ContactRepository contactRepository;
 
     @Autowired
-    private ContactRepository contactRepository;
+    public ContactController(ContactRepository contactRepository) {
+        this.contactRepository = contactRepository;
+    }
 
     @PostMapping("/contact")
     public Contact saveContactInquiryDetails(@RequestBody Contact contact) {
@@ -27,6 +30,6 @@ public class ContactController {
     public String getServiceReqNumber() {
         Random random = new Random();
         int ranNum = random.nextInt(999999999 - 9999) + 9999;
-        return "SR"+ranNum;
+        return "SR" + ranNum;
     }
 }

@@ -17,17 +17,20 @@ import java.util.List;
 
 @RestController
 public class LoginController {
+    private final CustomerRepository customerRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public LoginController(CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
+        this.customerRepository = customerRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Customer customer) {
-        Customer savedCustomer = null;
-        ResponseEntity response = null;
+        Customer savedCustomer;
+        ResponseEntity<String> response = null;
         try {
             String hashPwd = passwordEncoder.encode(customer.getPwd());
             customer.setPwd(hashPwd);
@@ -49,12 +52,12 @@ public class LoginController {
     @RequestMapping("/user")
     public Customer getUserDetailsAfterLogin(Authentication authentication) {
         List<Customer> customers = customerRepository.findByEmail(authentication.getName());
-        if (customers.size() > 0) {
+        if (!customers.isEmpty()) {
             return customers.get(0);
         } else {
             return null;
         }
 
     }
-    
+
 }

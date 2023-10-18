@@ -11,18 +11,16 @@ import java.util.List;
 
 @RestController
 public class BalanceController {
+    private final AccountTransactionsRepository accountTransactionsRepository;
 
     @Autowired
-    private AccountTransactionsRepository accountTransactionsRepository;
+    public BalanceController(AccountTransactionsRepository accountTransactionsRepository) {
+        this.accountTransactionsRepository = accountTransactionsRepository;
+    }
 
     @GetMapping("/myBalance")
     public List<AccountTransactions> getBalanceDetails(@RequestParam int id) {
-        List<AccountTransactions> accountTransactions = accountTransactionsRepository.
+        return accountTransactionsRepository.
                 findByCustomerIdOrderByTransactionDtDesc(id);
-        if (accountTransactions != null ) {
-            return accountTransactions;
-        }else {
-            return null;
-        }
     }
 }

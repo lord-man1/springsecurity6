@@ -15,8 +15,12 @@ import com.eazybytes.repository.NoticeRepository;
 @RestController
 public class NoticesController {
 
+    private final NoticeRepository noticeRepository;
+
     @Autowired
-    private NoticeRepository noticeRepository;
+    public NoticesController(NoticeRepository noticeRepository) {
+        this.noticeRepository = noticeRepository;
+    }
 
     @GetMapping("/notices")
     public ResponseEntity<List<Notice>> getNotices() {
